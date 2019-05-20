@@ -67,22 +67,28 @@ function start() {
 RGB = {
     R: 255,
     G: 255,
-    B: 255
+    B: 255,
+    season: 'winter'
 }
 time = 0;
 function startgame() {
-    if(RGB.B != 0 && RGB.R != 0 && RGB.G == 255){
-        RGB.R-=5;
-        RGB.B-=5;
+    if (time >= 0 && time < 51) {
+        RGB.R -= 5;
+        RGB.B -= 5;
+        time++;
     }
-    else if(RGB.B == 0 && RGB.R != 255 && RGB.G == 255){
-        RGB.R+=5;
+    else if (time >= 51 && time < 102) {
+        RGB.R += 5;
+        time++;
     }
-    else if(RGB.R == 255 && RGB.G == 255 && RGB.B != 255){
-        RGB.B+=5;
+    else if (time >= 102 && time < 153) {
+        RGB.B += 5;
+        time++;
     }
-    
-        
+    else if (time >= 153) {
+        time = 0;
+    }
+
     for (var q in grassArr) {
         grassArr[q].bazmanal();
     }
@@ -90,15 +96,15 @@ function startgame() {
         xotakerArr[q].utel();
     }
     for (var q in gishatichArr) {
-		gishatichArr[q].utel1();
-	}
-	for (var q in amenakerArr) {
-		amenakerArr[q].utel1();
-	}
-	for (var q in virusArr) {
-		virusArr[q].utel3();
-	}
-	for (var q in avastArr) {
+        gishatichArr[q].utel1();
+    }
+    for (var q in amenakerArr) {
+        amenakerArr[q].utel1();
+    }
+    for (var q in virusArr) {
+        virusArr[q].utel3();
+    }
+    for (var q in avastArr) {
         avastArr[q].utel();
     }
     io.sockets.emit('send matrix', matrix);
@@ -129,7 +135,7 @@ function clearMatrix() {
     ];
     xotakerArr = [];
     grassArr = [];
-    virusArr =[];
+    virusArr = [];
     avastArr = [];
     amenakerArr = [];
     gishatichArr = [];
@@ -142,23 +148,29 @@ function animalAdd(xy) {
         xotakerArr.push(new Xotaker(xy.x, xy.y));
     }
     else if (xy.type == 'all eater') {
-        amenakerArr.push(new Amenaker(xy.x,xy.y));
+        amenakerArr.push(new Amenaker(xy.x, xy.y));
     }
-    else if(xy.type == 'predator'){
-        gishatichArr.push(new Gishatich(xy.x,xy.y));
+    else if (xy.type == 'predator') {
+        gishatichArr.push(new Gishatich(xy.x, xy.y));
     }
-    else if(xy.type == 'virus'){
-        virusArr.push(new Virus(xy.x,xy.y));
+    else if (xy.type == 'virus') {
+        virusArr.push(new Virus(xy.x, xy.y));
     }
-    else if(xy.type == 'avast' || xy.type == 'antivirus'){
-        avastArr.push(new Avast(xy.x,xy.y));
+    else if (xy.type == 'avast' || xy.type == 'antivirus') {
+        avastArr.push(new Avast(xy.x, xy.y));
     }
     else {
         console.log(xy.type + ' not defined')
     }
     start();
 }
+function autostab(){
+    if(grassArr = []){
+        grassArr.push(new Grass(3,3));
+    }
+}
 io.on('connection', function (socket) {
+    socket.on('checkboxk', autostab)
     socket.on('reset', resetMatrix);
     socket.on('clear', clearMatrix);
     socket.on('addanimal', animalAdd);

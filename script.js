@@ -75,7 +75,14 @@ function addAnimal() {
 	}
 	socket.emit('addanimal', xy);
 }
-socket.on('season', seasonAction)
+function chboxk() {
+	checkbox = document.getElementById('box').value;
+	return checkbox;
+}
+checkbox = chboxk();
+setInterval(chboxk, 100);
+socket.emit('checkboxk', checkbox);
+socket.on('season', seasonAction);
 socket.on('send matrix', drawWorld);
 
 
