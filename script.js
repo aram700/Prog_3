@@ -1,5 +1,5 @@
 var socket = io();
-var n = 5;
+var n = 10;
 
 
 var side = 50;
@@ -17,22 +17,35 @@ function seasonAction(RGB) {
 	green = RGB.G;
 	blue = RGB.B;
 }
+ischecked = false;
+checkedRed = 255;
+checkedBlue = 255;
+checkedGreen = 255;
+
+function takeRGB(varForWeather) {
+	ischecked = varForWeather.checked;
+	checkedRed = varForWeather.r;
+	checkedGreen = varForWeather.g;
+	checkedBlue = varForWeather.b;
+}
+
 function drawWorld(matrix) {
 	for (var y = 0; y < matrix.length; y++) {
 		for (var x = 0; x < matrix[y].length; x++) {
-			if (matrix[y][x] == 1) {
-				fill(red, green, blue);
-				rect(x * side, y * side, side, side);
+			if (ischecked == false) {
+				if (matrix[y][x] == 1) {
+					fill(red, green, blue);
+					rect(x * side, y * side, side, side);
+				}
 			}
-			else if (matrix[y][x] == 1 && a == 3) {
-				fill("#FFE200");
-				rect(x * side, y * side, side, side);
+			else if (ischecked) {
+				if (matrix[y][x] == 1) {
+					fill(checkedRed, checkedGreen, checkedBlue);
+					rect(x * side, y * side, side, side);
+				}
 			}
-			else if (matrix[y][x] == 1 && a == 4) {
-				fill("white");
-				rect(x * side, y * side, side, side);
-			}
-			else if (matrix[y][x] == 0) {
+
+			if (matrix[y][x] == 0) {
 				fill('#acacac');
 				rect(x * side, y * side, side, side);
 			}
@@ -75,13 +88,60 @@ function addAnimal() {
 	}
 	socket.emit('addanimal', xy);
 }
-function chboxk() {
-	checkbox = document.getElementById('box').value;
-	return checkbox;
+function checkthebox() {
+	checkbox = document.getElementById('checkbox1').checked;
+	socket.emit('checkboxk', checkbox);
 }
-checkbox = chboxk();
-setInterval(chboxk, 100);
-socket.emit('checkboxk', checkbox);
+function checkWeather(){
+	checkradio1 = document.getElementById('chooseWeather1').checked;
+	checkradio2 = document.getElementById('chooseWeather2').checked;
+	checkradio3 = document.getElementById('chooseWeather3').checked;
+	checkradio4 = document.getElementById('chooseWeather4').checked;
+	checkradio5 = document.getElementById('chooseWeather5').checked;
+	selectedRadio = 0;
+	if (checkradio1) {
+		selectedRadio = 0;
+		checkradio2 = false;
+		checkradio3 = false;
+		checkradio4 = false;
+		checkradio5 = false;
+	}
+	if (checkradio2) {
+		selectedRadio = 1;
+		checkradio1 = false;
+		checkradio3 = false;
+		checkradio4 = false;
+		checkradio5 = false;
+	}
+	if (checkradio3) {
+		selectedRadio = 2;
+		checkradio1 = false;
+		checkradio2 = false;
+		checkradio4 = false;
+		checkradio5 = false;
+	}
+	if (checkradio4) {
+		selectedRadio = 3;
+		checkradio1 = false;
+		checkradio3 = false;
+		checkradio2 = false;
+		checkradio5 = false;
+	}
+	if (checkradio5) {
+		selectedRadio = 4;
+		checkradio1 = false;
+		checkradio3 = false;
+		checkradio4 = false;
+		checkradio2 = false;
+	}
+	socket.emit('selectedRadio', selectedRadio);
+
+}
+
+
+setInterval(checkthebox, 100);
+setInterval(checkWeather, 100);
+socket.on('answer of radio', takeRGB);
 socket.on('season', seasonAction);
 socket.on('send matrix', drawWorld);
 

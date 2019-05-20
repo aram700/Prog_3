@@ -13,11 +13,16 @@ Amenaker = require('./alleater.js');
 Gishatich = require('./predator.js');
 
 matrix = [
-    [0, 0, 0, 0, 1],
-    [0, 0, 0, 1, 0],
-    [0, 0, 1, 0, 0],
-    [0, 1, 0, 2, 0],
-    [1, 0, 0, 0, 0]
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+    [0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+    [0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+    [0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+    [0, 0, 0, 2, 0, 1, 0, 0, 0, 0],
+    [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+    [0, 0, 0, 1, 0, 3, 0, 0, 0, 0],
+    [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+    [0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+    [1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ]
 
 
@@ -115,22 +120,32 @@ function resetMatrix() {
     grassArr = [];
 
     matrix = [
-        [0, 0, 0, 0, 1],
-        [0, 0, 0, 1, 0],
-        [0, 0, 1, 0, 0],
-        [0, 1, 0, 2, 0],
-        [1, 0, 0, 0, 0]
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+        [0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+        [0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+        [0, 0, 0, 2, 0, 1, 0, 0, 0, 0],
+        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+        [0, 0, 0, 1, 0, 3, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+        [0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     ]
     start();
 
 }
 function clearMatrix() {
     matrix = [
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0]
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
     ];
     xotakerArr = [];
@@ -164,16 +179,82 @@ function animalAdd(xy) {
     }
     start();
 }
-function autostab(){
-    if(grassArr = []){
-        grassArr.push(new Grass(3,3));
+function autostab(checkbox) {
+    if (checkbox) {
+        xx = Math.floor(Math.random() * 9);
+        yy = Math.floor(Math.random() * 9);
+        if (grassArr.length == 0) {
+            grassArr.push(new Grass(xx, yy));
+        }
+        if (xotakerArr.length == 0) {
+            xotakerArr.push(new Xotaker(xx, yy));
+        }
+        else if (xotakerArr.length >= 10) {
+            xotakerArr.splice(10, 1);
+        }
+        if (gishatichArr.length == 0) {
+            gishatichArr.push(new Gishatich(xx, yy));
+        }
+        else if (gishatichArr.length >= 7) {
+            gishatichArr.splice(7, 1);
+        }
+        if(virusArr.length == 0){
+            virusArr.push(new Virus(xx,yy));
+        }
+        else if(virusArr.length >= 10){
+            virusArr.splice(10, 1);
+        }
+        if(avastArr.length == 0){
+            avastArr.push(new Avast(xx,yy));
+        }
+        else if(avastArr.length>=2){
+            avastArr.splice(1,1);
+        }
+        
     }
+}
+varForWeather = {
+    checked: false,
+    r: 255,
+    g: 255,
+    b: 255
+}
+function chooseWeather(selectedRadio) {
+    if (selectedRadio == 0) {
+        varForWeather.checked = false;
+    }
+    else if(selectedRadio == 1){
+        varForWeather.checked =true;
+        varForWeather.r = 255;
+        varForWeather.g = 255;
+        varForWeather.b = 255;
+    }
+    else if( selectedRadio == 2){
+        varForWeather.checked =true;
+        varForWeather.r = 100;
+        varForWeather.g = 255;
+        varForWeather.b = 100;
+    }
+    else if(selectedRadio == 3){
+        varForWeather.checked =true;
+        varForWeather.r = 0;
+        varForWeather.g = 255;
+        varForWeather.b = 0;
+    }
+    else if(selectedRadio == 4){
+        varForWeather.checked =true;
+        varForWeather.r = 255;
+        varForWeather.g = 255;
+        varForWeather.b = 0;
+    }
+    io.sockets.emit('answer of radio', varForWeather);
 }
 io.on('connection', function (socket) {
     socket.on('checkboxk', autostab)
     socket.on('reset', resetMatrix);
     socket.on('clear', clearMatrix);
     socket.on('addanimal', animalAdd);
+    socket.on('selectedRadio', chooseWeather);
 })
 start();
-setInterval(startgame, 100);
+setInterval(startgame, 250);
