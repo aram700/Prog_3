@@ -5,19 +5,21 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.14/p5.js"></script>
         <script src="/socket.io/socket.io.js"></script>
         <script src="script.js"></script>
+
 </head>
 
 <body>
+        <style src="style.css"></style>
         <button onClick='matrixClear()'>Clear World</button>
         <button onClick='matrixReset()'>Reset World</button>
         <br>
-        <input type="text" id='inputx' width ='100px'>
+        <input type="text" id='inputx' width='100px'>
         <input type="text" id='inputy'>
         <input type="text" id='animaltype'>
         <button onClick='addAnimal()'>Do it!</button>
         <br>
         <label for="box">World Auto Stabilization</label>
-        <input type="checkbox" id = 'checkbox1'>
+        <input type="checkbox" id='checkbox1'>
         <hr>
         <br>
         <h4>Choose Weather</h4>
@@ -25,9 +27,16 @@
         <input type="checkbox" id='chooseWeather2'>Winter <br>
         <input type="checkbox" id='chooseWeather3'>Spring <br>
         <input type="checkbox" id='chooseWeather4'>Summer <br>
-        <input type="checkbox" id='chooseWeather5'>Autumn <br>  
+        <input type="checkbox" id='chooseWeather5'>Autumn <br>
         <hr>
-
+        <div id="statistics">
+                <h3>Grass: <span id="grass"></span></h1>
+                        <h3>Grass Eater: <span id="grassEater"></span></h1>
+                                <h3>Predator: <span id="predator"></span></h1>
+                                        <h3>All Eater: <span id="amenaker"></span></h1>
+                                                <h3>Virus: <span id="virus"></span></h1>
+                                                        <h3>Avast: <span id="avast"></span></h1>
+        </div>
 </body>
 
 </html>

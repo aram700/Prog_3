@@ -5,6 +5,8 @@ avastArr = [];
 amenakerArr = [];
 gishatichArr = [];
 
+fs = require('fs');
+
 Grass = require('./grass.js');
 Xotaker = require('./grasseater.js');
 Virus = require('./virus.js');
@@ -198,19 +200,19 @@ function autostab(checkbox) {
         else if (gishatichArr.length >= 7) {
             gishatichArr.splice(7, 1);
         }
-        if(virusArr.length == 0){
-            virusArr.push(new Virus(xx,yy));
+        if (virusArr.length == 0) {
+            virusArr.push(new Virus(xx, yy));
         }
-        else if(virusArr.length >= 10){
+        else if (virusArr.length >= 10) {
             virusArr.splice(10, 1);
         }
-        if(avastArr.length == 0){
-            avastArr.push(new Avast(xx,yy));
+        if (avastArr.length == 0) {
+            avastArr.push(new Avast(xx, yy));
         }
-        else if(avastArr.length>=2){
-            avastArr.splice(1,1);
+        else if (avastArr.length >= 2) {
+            avastArr.splice(1, 1);
         }
-        
+
     }
 }
 varForWeather = {
@@ -223,32 +225,59 @@ function chooseWeather(selectedRadio) {
     if (selectedRadio == 0) {
         varForWeather.checked = false;
     }
-    else if(selectedRadio == 1){
-        varForWeather.checked =true;
+    else if (selectedRadio == 1) {
+        varForWeather.checked = true;
         varForWeather.r = 255;
         varForWeather.g = 255;
         varForWeather.b = 255;
     }
-    else if( selectedRadio == 2){
-        varForWeather.checked =true;
+    else if (selectedRadio == 2) {
+        varForWeather.checked = true;
         varForWeather.r = 100;
         varForWeather.g = 255;
         varForWeather.b = 100;
     }
-    else if(selectedRadio == 3){
-        varForWeather.checked =true;
+    else if (selectedRadio == 3) {
+        varForWeather.checked = true;
         varForWeather.r = 0;
         varForWeather.g = 255;
         varForWeather.b = 0;
     }
-    else if(selectedRadio == 4){
-        varForWeather.checked =true;
+    else if (selectedRadio == 4) {
+        varForWeather.checked = true;
         varForWeather.r = 255;
         varForWeather.g = 255;
         varForWeather.b = 0;
     }
     io.sockets.emit('answer of radio', varForWeather);
 }
+
+var statistics = {
+    "gArr": grassArr,
+    'xArr': xotakerArr,
+    'vArr': virusArr,
+    'aArr': avastArr,
+    'amArr': amenakerArr,
+    'giArr': gishatichArr
+}
+
+setInterval(function () {
+    statistics.gArr = grassArr.length,
+        statistics.xArr = xotakerArr.length,
+        statistics.vArr = virusArr.length,
+        statistics.aArr = avastArr.length,
+        statistics.amArr = amenakerArr.length,
+        statistics.giArr = gishatichArr.length,
+
+        fs.writeFile('statistics.json', JSON.stringify(statistics))
+    io.sockets.emit('statistics', statistics);
+
+
+}, 50);
+
+
+
+
 io.on('connection', function (socket) {
     socket.on('checkboxk', autostab)
     socket.on('reset', resetMatrix);

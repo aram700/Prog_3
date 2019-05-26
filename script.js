@@ -144,8 +144,17 @@ setInterval(checkWeather, 100);
 socket.on('answer of radio', takeRGB);
 socket.on('season', seasonAction);
 socket.on('send matrix', drawWorld);
+socket.on('statistics', changeStatistics);
 
 
+function changeStatistics(statistics) {
+	document.getElementById('grass').innerHTML = statistics.gArr;
+	document.getElementById('grassEater').innerHTML = statistics.xArr;
+	document.getElementById('predator').innerHTML = statistics.giArr;
+	document.getElementById('amenaker').innerHTML = statistics.amArr;
+	document.getElementById('virus').innerHTML = statistics.vArr;
+	document.getElementById('avast').innerHTML = statistics.aArr;
+}
 
 
 
